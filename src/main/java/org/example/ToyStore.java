@@ -85,11 +85,21 @@ public class ToyStore {
 
     public static void main(String[] args) {
         ToyStore toyStore = new ToyStore();
+        Scanner scanner = new Scanner(System.in);
+
+        // Ввод начального количества каждой игрушки с клавиатуры
+        System.out.println("Введите начальное количество каждой игрушки в автомате:");
+        System.out.print("Конструктор: ");
+        int constructorQuantity = scanner.nextInt();
+        System.out.print("Робот: ");
+        int robotQuantity = scanner.nextInt();
+        System.out.print("Кукла: ");
+        int dollQuantity = scanner.nextInt();
 
         // Добавление новых игрушек
-        toyStore.addToy(1, "Конструктор", 10, 20);
-        toyStore.addToy(2, "Робот", 5, 10);
-        toyStore.addToy(3, "Кукла", 15, 70);
+        toyStore.addToy(1, "Конструктор", constructorQuantity, 20);
+        toyStore.addToy(2, "Робот", robotQuantity, 10);
+        toyStore.addToy(3, "Кукла", dollQuantity, 70);
 
         // Изменение веса (частоты) игрушек
         toyStore.updateWeight(1, 30);
