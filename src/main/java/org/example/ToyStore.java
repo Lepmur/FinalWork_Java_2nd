@@ -116,12 +116,22 @@ public class ToyStore {
             }
         }
 
-        // Получаем призовые игрушки и записываем их в файл
-        for (int i = 0; i < 3; i++) {
-            Toy prize = toyStore.getPrizeToy();
-            if (prize != null) {
-                toyStore.writePrizeToTextFile(prize, "prize_winners.txt");
-                System.out.println("Выдана призовая игрушка: " + prize.getName());
+        // Выбор "играть" или "выход"
+        while (true) {
+            System.out.println("\nВыберите действие:");
+            System.out.println("1. Играть");
+            System.out.println("2. Выход");
+            int choice = scanner.nextInt();
+            if (choice == 1) {
+                Toy prize = toyStore.getPrizeToy();
+                if (prize != null) {
+                    toyStore.writePrizeToTextFile(prize, "prize_winners.txt");
+                    System.out.println("Выдана призовая игрушка: " + prize.getName());
+                }
+            } else if (choice == 2) {
+                break;
+            } else {
+                System.out.println("Некорректный выбор. Пожалуйста, выберите 1 или 2.");
             }
         }
     }
