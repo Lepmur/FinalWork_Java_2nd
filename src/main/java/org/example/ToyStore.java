@@ -1,5 +1,3 @@
-package org.example;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -13,11 +11,13 @@ public class ToyStore {
         prizeToys = new ArrayList<>();
     }
 
+    // Метод для добавления новой игрушки
     public void addToy(int id, String name, int quantity, int weight) {
         Toy toy = new Toy(id, name, quantity, weight);
         toys.add(toy);
     }
 
+    // Метод для изменения веса (частоты выпадения) игрушки
     public void updateWeight(int id, int newWeight) {
         for (Toy toy : toys) {
             if (toy.getId() == id) {
@@ -28,6 +28,7 @@ public class ToyStore {
         System.out.println("Игрушка с ID " + id + " не найдена.");
     }
 
+    // Метод для добавления призовой игрушки в список ожидания
     public void addPrizeToy(Toy toy) {
         if (toys.contains(toy) && toy.getQuantity() > 0) {
             prizeToys.add(toy);
@@ -36,10 +37,11 @@ public class ToyStore {
         }
     }
 
+    // Метод для получения призовой игрушки
     public Toy getPrizeToy() {
         if (!prizeToys.isEmpty()) {
-            Toy prize = prizeToys.remove(0);
-            prize.decrementQuantity();
+            Toy prize = prizeToys.remove(0); // Удаляем первую игрушку из списка призовых
+            prize.decrementQuantity(); // Уменьшаем количество игрушек
             return prize;
         } else {
             System.out.println("Список призовых игрушек пуст.");
@@ -47,6 +49,7 @@ public class ToyStore {
         }
     }
 
+    // Метод для записи призовой игрушки в текстовый файл
     public void writePrizeToTextFile(Toy prize, String fileName) {
         try (FileWriter fileWriter = new FileWriter(fileName, true)) {
             fileWriter.write("Победила игрушка: " + prize.getName() + "\n");
@@ -55,7 +58,9 @@ public class ToyStore {
         }
     }
 
+    // Метод для розыгрыша игрушек
     public Toy drawToy() {
+        // Создаем список с учетом весов (частот выпадения)
         List<Toy> weightedToys = new ArrayList<>();
         for (Toy toy : toys) {
             for (int i = 0; i < toy.getWeight(); i++) {
@@ -63,27 +68,45 @@ public class ToyStore {
             }
         }
 
+        // Выбираем случайную игрушку из списка с учетом весов
         Random random = new Random();
         int randomIndex = random.nextInt(weightedToys.size());
         return weightedToys.get(randomIndex);
     }
 
+    // Метод для определения начального количества всех игрушек в автомате
+    public int getTotalQuantity() {
+        int totalQuantity = 0;
+        for (Toy toy : toys) {
+            totalQuantity += toy.getQuantity();
+        }
+        return totalQuantity;
+    }
+
     public static void main(String[] args) {
         ToyStore toyStore = new ToyStore();
 
+        // Добавление новых игрушек
         toyStore.addToy(1, "Конструктор", 10, 20);
         toyStore.addToy(2, "Робот", 5, 10);
         toyStore.addToy(3, "Кукла", 15, 70);
 
+        // Изменение веса (частоты) игрушек
         toyStore.updateWeight(1, 30);
 
+        // Вывод начального количества всех игрушек
+        int initialTotalQuantity = toyStore.getTotalQuantity();
+        System.out.println("Начальное количество всех игрушек: " + initialTotalQuantity);
+
+        // Добавляем призовые игрушки в список ожидания
         for (int i = 0; i < 5; i++) {
-            Toy prizeToy = toyStore.drawToy();
+            Toy prizeToy = toyStore.drawToy(); // Вызываем метод розыгрыша
             if (prizeToy != null) {
                 toyStore.addPrizeToy(prizeToy);
             }
         }
 
+        // Получаем призовые игрушки и записываем их в файл
         for (int i = 0; i < 3; i++) {
             Toy prize = toyStore.getPrizeToy();
             if (prize != null) {
@@ -94,6 +117,7 @@ public class ToyStore {
     }
 }
 
+// Класс для игрушек
 class Toy {
     private int id;
     private String name;
@@ -127,6 +151,7 @@ class Toy {
         this.weight = weight;
     }
 
+    // Метод для уменьшения количества игрушек
     public void decrementQuantity() {
         if (quantity > 0) {
             quantity--;
